@@ -1,0 +1,8 @@
+can't add all characters from characters.png because of texturekey(probably)
+xp after level completed needed(priority: high)
+
+
+..test..
+while making end for levels try making character collide with a topmost layer only available for this purpose. 
+Check if no enemies exist this.gameover and show a level complete screen(scene) with xp and when user click on next level do a this.scene.start(Next Level) for going to next level
+How to save game load game transfer data from 1 level to 2 still needed(priority: high)
