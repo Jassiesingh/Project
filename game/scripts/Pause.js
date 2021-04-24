@@ -33,11 +33,7 @@ class Pause extends Phaser.Scene {
     }
 
     enterButtonActiveState2() {
-        this.scene.start("pause")
         this.scene.switch("GameScene")
         this.scene.switch("UIScene")
-        let gs = this.scene.get("GameScene")
-        gs.scene.resume()
-
     }
 }

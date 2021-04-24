@@ -28,9 +28,9 @@ class UIScene extends Phaser.Scene {
     }
 
     enterButtonActiveState1() {
-        this.scene.start("pause")
-        let gs = this.scene.get("GameScene")
-        gs.scene.pause()
+        this.scene.launch('pause');
+        this.scene.sleep('GameScene');
+        this.scene.sleep();
 
     }
 
@@ -44,5 +44,4 @@ class UIScene extends Phaser.Scene {
         this.coinText.setText('Coins: ' + this.coinScore)
         this.healthbar.updateHealth(100)
     }
-
 }

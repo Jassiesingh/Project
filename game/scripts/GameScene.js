@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, null, this)
         this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
         this.physics.add.collider(this.player, this.gems, this.handlePlayerGemCollision, null, this)
-        this.physics.add.overlap(this.player, this.complete, this.handlePlayerOverlapCollisons, null, this)
+        this.physics.add.collider(this.player, this.complete, this.handlePlayerOverlapCollisons, null, this)
 
         //particles for cool death effects
         this.emitter = this.add.particles('particle').createEmitter({
@@ -227,14 +227,14 @@ class GameScene extends Phaser.Scene {
 
 
     //test code for level completion
-    // handlePlayerOverlapCollisons(player, complete) {
-    //     if (p.overlap) {
-    //         this.scene.start("playGame")
-    //     }
-    // }
+    handlePlayerOverlapCollisons(player, complete) {
+        if (player.collider(complete)) {
+            this.scene.start('playGame')
+        }
+    }
 
     //colliding with gems
-    
+
     handlePlayerGemCollision(p, g) {
         g.destroy()
         if (p.health < 95) {
@@ -331,6 +331,13 @@ class GameScene extends Phaser.Scene {
 
         if (!this.enemy2.isDead) {
             this.enemy2.update(this.player.body.position, time)
+        }
+
+        if (this.enemy.isDead && this.enemy2.isDead) {
+            this.scene.launch('playGame');
+            this.scene.sleep('GameScene');
+            this.scene.sleep();
+            // this.scene.launch("MainMenu")
         }
 
         this.enemies.children.iterate((child) => {

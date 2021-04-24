@@ -14,6 +14,7 @@ class MainMenu extends Phaser.Scene {
         this.add.image(110, 110, 'background')
         //Main Menu text
         this.add.text(110, 50, "Main Menu")
+        this.scene.stop("UIScene")
 
         //some dummy 
         this.clickButton = this.add.text(100, 100, 'Start Game!', { fill: '#fff' })
@@ -23,14 +24,6 @@ class MainMenu extends Phaser.Scene {
                 this.enterButtonHoverState();
 
             });
-        
-        // this.howtoplay = this.add.text(100, 150, 'How to Play', { fill: '#fff' })
-        // .setInteractive({ useHandCursor: true }).on('pointerover', () => this.enterButtonHoverState())
-        // .on('pointerout', () => this.enterButtonRestState()).on('pointerdown', () => this.enterButtonActiveState())
-        // .on('pointerup', () => {
-        //     this.enterButtonHoverState();
-
-        // }); 
     }
 
     //update function go brrr
@@ -44,7 +37,8 @@ class MainMenu extends Phaser.Scene {
     }
 
     enterButtonActiveState() {
-        this.scene.start("GameScene")
+        this.scene.start('GameScene')
+        this.scene.start('UIScene')
 
         // this.clickButton.setStyle({ fill: '#0ff' });
     }
