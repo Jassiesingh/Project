@@ -48,6 +48,7 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
         let projectile = this.getFirstDead(false)
         if(projectile){
             projectile.fire(x, y, facing)
+            this.plasmabar -= 1
         }
     }
 }

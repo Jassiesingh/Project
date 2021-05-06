@@ -39,6 +39,7 @@ class GameScene extends Phaser.Scene {
         this.enemy
         this.enemies
         this.healthbar
+        this.plasmabar
         this.projectiles
         this.keys
         this.lastFiredTime = 0
@@ -89,6 +90,7 @@ class GameScene extends Phaser.Scene {
             frameRate: 12,
             repeat: -1
         })
+
         //adding coins and gems in the group
         this.coins = this.physics.add.group()
         this.gems = this.physics.add.group()
@@ -112,7 +114,7 @@ class GameScene extends Phaser.Scene {
         })
 
         // our player sprite
-        this.player = new Player(this, 50, 100, 'player', 100);
+        this.player = new Player(this, 50, 100, 'player', 10);
         console.log(this.player.health)
 
         // don't go out of the map
@@ -124,7 +126,6 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, obstacles);
 
         //test code for level complete
-        this.physics.add.overlap(this.player, complete);
 
         // this.physics.add.collider(this.player, worldLayer)
 
@@ -139,19 +140,21 @@ class GameScene extends Phaser.Scene {
         // this.physics.add.collider(this.enemy, worldLayer)
         this.enemy.body.setCollideWorldBounds(true)
         this.physics.add.collider(this.enemy, obstacles)
+        this.physics.add.collider(this.enemy, complete)
 
         //enemy that follows??
-        this.enemy2 = new EnemyFollow(this, 250, 200, 'Atlas1', 50, 'follow', 20).setTint(0x00ff00)
+        this.enemy2 = new EnemyFollow(this, 250, 200, 'Atlas1', 50, 'follow', 60).setTint(0x00ff00)
 
         // this.physics.add.collider(this.enemy2, worldLayer)
         this.enemy2.body.setCollideWorldBounds(true)
         this.physics.add.collider(this.enemy2, obstacles)
 
-
         //group of enemies???
         this.enemies = this.add.group()
         this.enemies.add(this.enemy)
         this.enemies.add(this.enemy2)
+        // console.log(complete)
+        // console.log(obstacles)
 
         // for (let i = 0; i < 10; i++) {
         //     const e = new Enemy(this, 220 + 20 * i, 250, 'Atlas1', 10, 'wandering10')
@@ -175,11 +178,9 @@ class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.enemies, worldLayer)
         this.physics.add.collider(this.enemies, obstacles)
-        this.physics.add.collider(this.enemies, complete)
+        // this.physics.add.collider(this.enemies, complete)
 
-
-        // //HealthBar
-        // this.healthbar = new Healthbar(this, 20, 10, 100)
+        //HealthBar code was moved to UIScene
 
         //bullets for the wicked
         this.keys = this.input.keyboard.addKeys({
@@ -187,6 +188,9 @@ class GameScene extends Phaser.Scene {
         })
 
         this.projectiles = new Projectiles(this)
+        this.plasmabar = new PlasmaBar(this)
+        console.log(this.plasmabar)
+
 
         //this. callback for the collision custom functions 
         this.physics.add.collider(this.projectiles, obstacles, this.handleProjectileWorldCollision, null, this)
@@ -195,6 +199,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.coins, this.handlePlayerCoinCollision, null, this)
         this.physics.add.collider(this.player, this.gems, this.handlePlayerGemCollision, null, this)
         this.physics.add.collider(this.player, this.complete, this.handlePlayerOverlapCollisons, null, this)
+
 
         //particles for cool death effects
         this.emitter = this.add.particles('particle').createEmitter({
@@ -207,6 +212,9 @@ class GameScene extends Phaser.Scene {
             lifespan: 300,
             active: false
         })
+
+        //dummy text
+        this.add.text(300, 100, 'Level1', { font: '8px', fill: '#ffffff' })
 
         //code for displaying coins collected was shifted to UIScene 
 
@@ -233,8 +241,8 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-    //colliding with gems
 
+    //colliding with gems
     handlePlayerGemCollision(p, g) {
         g.destroy()
         if (p.health < 95) {
@@ -250,6 +258,7 @@ class GameScene extends Phaser.Scene {
         // p.recycle()
         this.projectiles.killAndHide(p)
     }
+
 
     //Projectiles colliding with enemy
     handleProjectileEnemyCollision(enemy, projectile) {
@@ -271,18 +280,19 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+
     // Player colliding with enemy
     handlePlayerEnemyCollision(p, e) {
         // console.log('player hit');
         p.health -= e.damage
         let ui = this.scene.get('UIScene')
-        ui.healthbar.updateHealth(p.health)
+        // ui.healthbar.updateHealth(p.health)
         if (p.health <= 0) {
             this.cameras.main.shake(100, 0.05)
             this.cameras.main.fade(250, 0, 0, 0)
             this.cameras.main.once('camerafadeoutcomplete', () => {
                 ui.reset()
-                this.scene.restart()
+                this.scene.start('GameScene')
             })
 
         }
@@ -300,28 +310,23 @@ class GameScene extends Phaser.Scene {
         e.explode()
     }
 
-    update(time, delta) {
+
+    update(time, delta, projectile) {
         if (this.keys.space.isDown) {
             if (time > this.lastFiredTime) {
-                this.lastFiredTime = time + 90
+                this.lastFiredTime = time + 100
                 this.projectiles.fireProjectile(this.player.x, this.player.y, this.player.facing)
+                let ui = this.scene.get('UIScene')
+                ui.plasmabar -= 1;
             }
             // console.log('fire');
         }
 
-        // if (this.key_P.isDown && this.pausePhysics === false) {
-        //     // Physics becomes active
-        //     this.pausePhysics = true;
-        //     // Pause `Physics`
-        //     this.physics.pause();
-        // }
-        // // Otherwise, if pressing the `P` key
-        // // & `Physics` `IS` active
-        // else {
-        //     // Set `Physics` variable back to `off`
-        //     this.pausePhysics = false;
-        // }
-
+        if (projectile.active) {
+            this.plasmabar -= 1
+            let ui = this.scene.get('UIScene')
+            ui.plasmabar.updatePlasma(p.plasma)
+        }
 
         this.player.update()
 
@@ -333,18 +338,15 @@ class GameScene extends Phaser.Scene {
             this.enemy2.update(this.player.body.position, time)
         }
 
-        if (this.enemy.isDead && this.enemy2.isDead) {
-            this.scene.launch('playGame');
-            this.scene.sleep('GameScene');
-            this.scene.sleep();
-            // this.scene.launch("MainMenu")
-        }
-
         this.enemies.children.iterate((child) => {
             if (!child.isDead) {
                 child.update()
             }
         })
+
+        if (this.enemy.isDead && this.enemy2.isDead) {
+            this.scene.stop('GameScene').launch('level2');
+        }
 
     } //end update
 

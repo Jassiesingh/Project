@@ -2,7 +2,7 @@ class EnemyFollow extends Enemy {
     constructor(scene, x, y, textureKey, damage, type, speed) {
         super(scene, x, y, textureKey, 'Enemy', type)
 
-        this.speed = 32
+        this.speed = 70
         this.chasing = true
         this.storedTime = 0
         this.damage = damage

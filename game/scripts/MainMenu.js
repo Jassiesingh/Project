@@ -38,7 +38,7 @@ class MainMenu extends Phaser.Scene {
 
     enterButtonActiveState() {
         this.scene.start('GameScene')
-        this.scene.start('UIScene')
+        this.scene.launch('UIScene')
 
         // this.clickButton.setStyle({ fill: '#0ff' });
     }

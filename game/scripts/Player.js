@@ -46,7 +46,7 @@ class Player extends Entity {
             frameRate: 10,
             repeat: -1
         });
-        // One single idle animation because character dosen't have any animations standing idle. If had any make multiple idleframes
+        // One single idle animation because character dosen't have any animations standing idle. If had any make multiple idleframes and uncomment the next line
         this.idleFrame = {
             down: 49,
             left: 61,

@@ -7,9 +7,13 @@ class UIScene extends Phaser.Scene {
         this.coinScore = 0
         //coin text
         this.coinText = this.add.text(300, 4, 'Coins: ' + this.coinScore, { font: '8px', fill: '#ffffff' })
-        //HealthBar
-        this.healthbar = new Healthbar(this, 8, 2, 100)
 
+        //HealthBar
+        // this.healthbar = new Healthbar(this, 8, 2, 100)
+        
+        //plasmabar
+        this.plasmabar = new PlasmaBar(this, 150, 2, 100)
+        
         //pause button
         this.pauseButton = this.add.text(350, 1, 'Pause', { fill: '#fff' })
             .setInteractive({ useHandCursor: true }).on('pointerover', () => this.enterButtonHoverState1())
@@ -30,6 +34,9 @@ class UIScene extends Phaser.Scene {
     enterButtonActiveState1() {
         this.scene.launch('pause');
         this.scene.sleep('GameScene');
+        this.scene.sleep('level2');
+        this.scene.sleep('level3');
+        this.scene.sleep('level4');
         this.scene.sleep();
 
     }
@@ -42,6 +49,6 @@ class UIScene extends Phaser.Scene {
     reset() {
         this.coinScore = 0
         this.coinText.setText('Coins: ' + this.coinScore)
-        this.healthbar.updateHealth(100)
+        this.plasmabar.updateHealth(100)
     }
 }

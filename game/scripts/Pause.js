@@ -5,17 +5,15 @@ class Pause extends Phaser.Scene {
 
     preload() {
         //preloading all the stuff
-        // this.load.image('background', 'assets/unnamed.png')
-        
+        // this.load.image('background', 'assets/unnamed.png')   
     }
 
     create() {
         //background for the Main Menu
-        // this.add.image(110, 110, 'background')
         //Main Menu text
         this.add.text(110, 50, "Pause Menu")
 
-        //some dummy 
+        //resumebutton 
         this.resumeButton = this.add.text(100, 100, 'Resume game', { fill: '#fff' })
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.enterButtonHoverState2())

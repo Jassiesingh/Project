@@ -20,7 +20,7 @@ let config = {
         parent: "thegame"
     },
     pixelArt: true,
-    scene: [loadScene, MainMenu, GameScene, Pause, UIScene, xp]
+    scene: [loadScene, MainMenu, GameScene, level2, level3, Pause, UIScene, xp]
 }
 const game = new Phaser.Game(config)
 }) //end load listener
