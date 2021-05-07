@@ -1,0 +1,14 @@
+can't add all characters from characters.png because of texturekey or framesize(probably)
+
+How to save game load game transfer data from 1 level to 2 still needed(priority: high)                     Half-Solved(Coins collected transferring)
+
+coins collected transferring to next level(priority: medium)                                                Solved
+
+
+--Things for morning--
+
+Level 4 not loading                                                                                         Solved(scene was not declared)
+Mech robot on level4(Boss should die in 20 hits)(MechRobot displayed and can move all collisions done)      Further investigation required
+Speeds of different enemies on different levels                                                             Further investigation required
+Unpause all levels                                                                                          Further investigation required
+Player and MechRobot not overlapping                                                                        Further investigation required
